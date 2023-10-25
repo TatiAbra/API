@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "d73dfb1a-1eb7-46ad-8252-ff229b3f9fc0",
+		"name": "Статистка",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28748601"
+	},
+	"item": [
+		{
+			"name": "Кол-во пользователей по периодам",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for daily mode only\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"daily\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{metricsServer}}/channel/{{channelId}}/stats/viewers?dateFrom=2023-01-20T00:00:00&dateTo=2023-02-21T00:00:00&mode=daily",
+					"host": [
+						"{{metricsServer}}"
+					],
+					"path": [
+						"channel",
+						"{{channelId}}",
+						"stats",
+						"viewers"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "2023-01-20T00:00:00",
+							"description": "Обязательный параметр\nДата начала периода (string)"
+						},
+						{
+							"key": "dateTo",
+							"value": "2023-02-21T00:00:00",
+							"description": "Обязательный параметр\nДата окончания периода (string)"
+						},
+						{
+							"key": "mode",
+							"value": "daily",
+							"description": "Опциональный параметр\nрежим вывода данных (string)\nВарианты значений: \n- hourly -- по часам, \n- daily -- по дням, \n- weekly -- по неделям,\n- monthly -- по месяцам"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Статистика добавления канала в Избранное",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for active status only\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"active\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{metricsServer}}/channel/{{channelId}}/stats/favourites?dateFrom={{dateFrom}}&dateTo={{dateTo}}&status=active",
+					"host": [
+						"{{metricsServer}}"
+					],
+					"path": [
+						"channel",
+						"{{channelId}}",
+						"stats",
+						"favourites"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "{{dateFrom}}"
+						},
+						{
+							"key": "dateTo",
+							"value": "{{dateTo}}"
+						},
+						{
+							"key": "status",
+							"value": "active",
+							"description": "Опциональный параметр\n(enam)\nactive -- выводит количество пользователей, у которых на конец периода канал все ещё находится в списке избранных\n"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Оценки пользователей",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"response must be valid and have a body\", function () {\r",
+							"        pm.response.to.be.ok;\r",
+							"\t\tpm.response.to.be.withBody;\r",
+							"\t\tpm.response.to.be.json;\r",
+							"\t});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{metricsServer}}/channel/{{channelId}}/stats/rating?dateFrom={{dateFrom}}&dateTo={{dateTo}}",
+					"host": [
+						"{{metricsServer}}"
+					],
+					"path": [
+						"channel",
+						"{{channelId}}",
+						"stats",
+						"rating"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "{{dateFrom}}",
+							"description": "Обязательный параметр\nДата начала периода (string)"
+						},
+						{
+							"key": "dateTo",
+							"value": "{{dateTo}}",
+							"description": "Обязательный параметр\nДата окончания периода (string)"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "metricsServer",
+			"value": "https://737d1334-2cd4-4565-9d83-4c6959bf9c81.mock.pstmn.io",
+			"type": "string"
+		},
+		{
+			"key": "channelId",
+			"value": "14100",
+			"type": "string"
+		},
+		{
+			"key": "dateFrom",
+			"value": "2023-01-20T00:00:00",
+			"type": "string"
+		},
+		{
+			"key": "dateTo",
+			"value": "2023-02-20T23:59:59",
+			"type": "string"
+		},
+		{
+			"key": "dateHourFrom",
+			"value": "2023-01-16T09:00:00",
+			"type": "string"
+		},
+		{
+			"key": "dateHourTo",
+			"value": "2023-01-16T10:00:00",
+			"type": "string"
+		}
+	]
+}
